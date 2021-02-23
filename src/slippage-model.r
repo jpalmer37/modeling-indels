@@ -4,17 +4,6 @@
 # * Capitalized variables are global, initialized by setup() function *
 source("~/vindels/2_within-host/slip-model-utils.r")
 
-
-prior <- function(param){
-  # some of these are weakly informative and can be narrowed
-  prior.pe <- dunif(param[1], min=1e-7, max=1e-3, log=T)  
-  prior.ps <- dunif(param[2], min=0.55, max=0.99, log=T) 
-  prior.rate <- dlnorm(param[3],meanlog=log(0.00001),sdlog=1.1,log=T) #dunif(param[3], min=1e-7, max=1e-3, log=T)
-  prior.fix <- dbeta(param[4], shape1=3, shape2=27, log=T) 
-  
-  return(prior.pe + prior.ps + prior.rate + prior.fix)
-}
-
 posterior <- function(param, slip, llh){
   if (any(param > 1)){
     return(log(0))
